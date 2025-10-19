@@ -12,7 +12,13 @@ class CallLogDataSource @Inject constructor(@ApplicationContext private val cont
 
     suspend fun getCallLogs(startTime: Long, endTime: Long): List<CallLogData> = withContext(Dispatchers.IO) {
         val callLogList = mutableListOf<CallLogData>()
-        val projection = arrayOf(CallLog.Calls.NUMBER, CallLog.Calls.DATE, CallLog.Calls.TYPE)
+        val projection = arrayOf(
+            CallLog.Calls.NUMBER,
+            CallLog.Calls.DATE,
+            CallLog.Calls.TYPE,
+            CallLog.Calls.CACHED_NAME, // 상대방 이름 추가
+            CallLog.Calls.DURATION // 통화 길이(내용) 추가
+        )
         val selection = "${CallLog.Calls.DATE} >= ? AND ${CallLog.Calls.DATE} <= ?"
         val selectionArgs = arrayOf(startTime.toString(), endTime.toString())
 
@@ -26,12 +32,26 @@ class CallLogDataSource @Inject constructor(@ApplicationContext private val cont
             val numberColumn = cursor.getColumnIndex(CallLog.Calls.NUMBER)
             val dateColumn = cursor.getColumnIndex(CallLog.Calls.DATE)
             val typeColumn = cursor.getColumnIndex(CallLog.Calls.TYPE)
+            val nameColumn = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)
+            val durationColumn = cursor.getColumnIndex(CallLog.Calls.DURATION)
 
             while (cursor.moveToNext()) {
                 val number = cursor.getString(numberColumn)
                 val date = cursor.getLong(dateColumn)
                 val type = cursor.getInt(typeColumn)
-                callLogList.add(CallLogData(number, date, type))
+                val cachedName = cursor.getString(nameColumn)
+                val duration = cursor.getLong(durationColumn)
+
+                val contactName = if (cachedName.isNullOrEmpty()) "알 수 없음" else cachedName
+
+                callLogList.add(
+                    CallLogData(
+                        phoneNumber = number,
+                        contactName = contactName,
+                        date = date,
+                        duration = duration
+                    )
+                )
             }
         }
         callLogList

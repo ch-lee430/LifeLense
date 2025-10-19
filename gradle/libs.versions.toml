@@ -14,6 +14,7 @@ material3 = "1.4.0"
 composeBom = "2024.09.00"
 accompanist = "0.34.0"
 composeMaterial3 = "1.2.1"
+benchmarkCommon = "1.4.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +36,7 @@ hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-comp
 material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
 accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
 androidx-material-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "composeMaterial3" }
+androidx-benchmark-common = { group = "androidx.benchmark", name = "benchmark-common", version.ref = "benchmarkCommon" }
 
 
 [plugins]
