@@ -1,7 +1,7 @@
 [versions]
 # AGP 버전이 8.12.2로 되어 있는데, 이는 오타일 가능성이 높습니다.
 # 안정적인 버전인 8.2.2 또는 8.1.0을 사용하는 것이 좋습니다.
-agp = "8.12.2"
+agp = "8.13.0"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
 junit = "4.13.2"
@@ -15,8 +15,10 @@ composeBom = "2024.09.00"
 accompanist = "0.34.0"
 composeMaterial3 = "1.2.1"
 benchmarkCommon = "1.4.1"
+generativeai = "0.9.0"
 
 [libraries]
+generativeai = { module = "com.google.ai.client.generativeai:generativeai", version.ref = "generativeai" }
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
