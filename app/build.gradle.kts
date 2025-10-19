@@ -1,9 +1,16 @@
+import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.hilt.android)
     id("kotlin-kapt")
+}
+
+val properties = Properties()
+val localPropertiesFile = rootProject.file("local.properties")
+if (localPropertiesFile.exists()) {
+    properties.load(localPropertiesFile.inputStream())
 }
 
 android {
@@ -16,6 +23,13 @@ android {
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
+
+        val geminiApiKey = properties.getProperty("GEMINI_API_KEY")
+        buildConfigField(
+            "String", // 타입: 문자열
+            "GEMINI_API_KEY", // BuildConfig에서 사용할 변수 이름 (BuildConfig.GEMINI_API_KEY)
+            "\"$geminiApiKey\"" // 값: 반드시 \" \" (이스케이프된 따옴표)로 감싸야 합니다.
+        )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -38,10 +52,12 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
 dependencies {
+    implementation(libs.generativeai)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
