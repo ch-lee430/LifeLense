@@ -8,13 +8,15 @@ import com.example.test.domain.model.CalendarEvent
 import com.example.test.domain.model.Memory
 import com.example.test.domain.model.ReferenceItem
 import com.example.test.domain.model.ReferenceType
+import com.example.test.domain.repository.GeminiRepository
 import com.example.test.domain.repository.MemoryRepository
 import javax.inject.Inject
 import java.util.concurrent.TimeUnit
 
 // --- 유즈케이스 ---
 class DummyMemoryUseCase @Inject constructor(
-    private val memoryRepository: MemoryRepository
+    private val memoryRepository: MemoryRepository,
+    private val geminiRepository: GeminiRepository
 ) {
     suspend operator fun invoke(question: String): Memory {
         // 1. 질문에서 날짜 추출 (현재는 1년 전으로 고정)
@@ -113,8 +115,7 @@ class DummyMemoryUseCase @Inject constructor(
     }
 
     // 텍스트 요약 로직 (Gemini API 활용)
-    private fun generateSummaryFromText(text: String): String {
-        // TODO: 여기에 실제 Gemini API 호출 로직이 들어갑니다. (현재는 더미 요약)
-        return "Gemini 분석 결과: 2023년 10월 9일, 당신은 중요한 프로젝트 마감 일정으로 바빴으며, 친구와 점심 약속을 잡고 중요한 업무 전화를 한 기록이 발견되었습니다. 관련된 8개의 기록을 확인하세요."
+    private suspend fun generateSummaryFromText(text: String): String {
+        return geminiRepository.generateAnswer(text)
     }
 }
