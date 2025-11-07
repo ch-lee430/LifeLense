@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.test.domain.model.CalendarEvent
-import com.example.test.presentation.dummy.formatTimestamp
+import com.example.test.presentation.screen.formatTimestamp
 import java.text.SimpleDateFormat
 import java.util.*
 

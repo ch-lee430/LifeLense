@@ -78,4 +78,5 @@ dependencies {
     kapt(libs.hilt.android.compiler)
     implementation(libs.accompanist.permissions)
     implementation(libs.androidx.material.icons.extended)
+    implementation(libs.gson)
 }

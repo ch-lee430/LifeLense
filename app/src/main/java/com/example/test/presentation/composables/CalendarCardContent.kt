@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.domain.model.ReferenceItem
-import com.example.test.presentation.dummy.CardStyle
+import com.example.test.presentation.screen.CardStyle
 
 @Composable
 fun CalendarCardContent(item: ReferenceItem, style: CardStyle) {

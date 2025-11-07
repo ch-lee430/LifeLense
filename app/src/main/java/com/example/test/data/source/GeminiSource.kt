@@ -14,16 +14,27 @@ class GeminiSource @Inject constructor(@ApplicationContext private val context: 
         apiKey = BuildConfig.GEMINI_API_KEY
     )
 
+
     suspend fun generateGeminiAnswer(question: String): String {
         try {
             val response = generativeModel.generateContent(question)
 
-            Log.d("tag", response.text?: "no answer")
-            return response.text ?: "No response text found."
+            val responseText = response.text ?: ""
+
+            val cleanedJson = responseText
+                .trim()
+                .removePrefix("```json") // 마크다운 코드 블록 시작 제거
+                .removePrefix("```")     // 일반 코드 블록 시작 제거
+                .removeSuffix("```")     // 코드 블록 끝 제거
+                .trim()
+
+            Log.d("GeminiSource", "Cleaned JSON Response: $cleanedJson")
+            return cleanedJson
 
         } catch (e: Exception) {
             Log.e("GeminiSource", "Error generating answer: ${e.message}", e)
-            return "An error occurred: ${e.localizedMessage}"
+            // 에러 발생 시 파싱 가능하도록 에러 메시지를 JSON 형태로 반환
+            return "{\"summary\":\"API 통신 실패: ${e.localizedMessage}\", \"reference_indices\":[]}"
         }
     }
 }

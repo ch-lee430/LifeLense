@@ -16,7 +16,7 @@ import com.example.test.domain.model.ReferenceItem
 @Composable
 fun ReferenceCardSection(
     referenceData: List<ReferenceItem>,
-    onCardClick: (ReferenceItem) -> Unit // ★★★ 추가된 인자 ★★★
+    onCardClick: (ReferenceItem) -> Unit
 ) {
     Column(modifier = Modifier.padding(vertical = 12.dp)) {
         Text(
@@ -27,7 +27,7 @@ fun ReferenceCardSection(
         )
         LazyRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             items(referenceData) { item ->
-                ReferenceCard(item, onCardClick) // ★★★ onCardClick 전달 ★★★
+                ReferenceCard(item, onCardClick)
             }
         }
     }

@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -24,15 +23,13 @@ fun InputRow(
     questionText: String,
     onQuestionTextChange: (String) -> Unit,
     onSendClick: () -> Unit,
-    isLoading: Boolean
+    isLoading: Boolean,
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(8.dp)
-            .navigationBarsPadding(),
-        // ★★★ 수정: imePadding() 및 navigationBarsPadding() 모두 제거 ★★★
-        // Scaffold의 bottomBar가 알아서 하단 시스템 바를 피하고, LazyColumn의 contentPadding이 InputRow 높이를 고려하게 함
+            .padding(8.dp), // navigationBarsPadding() 쓰지 않음 (Scaffold에서 처리)
         verticalAlignment = Alignment.CenterVertically
     ) {
         OutlinedTextField(

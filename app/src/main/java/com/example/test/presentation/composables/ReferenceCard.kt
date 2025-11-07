@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.test.domain.model.ReferenceItem
 import com.example.test.domain.model.ReferenceType
-import com.example.test.presentation.dummy.formatTimestamp
-import com.example.test.presentation.dummy.getCardStyle
+import com.example.test.presentation.screen.formatTimestamp
+import com.example.test.presentation.screen.getCardStyle
 
 @Composable
 fun ReferenceCard(

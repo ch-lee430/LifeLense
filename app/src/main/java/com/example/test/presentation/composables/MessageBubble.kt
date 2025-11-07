@@ -14,10 +14,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import com.example.test.presentation.dummy.Sender
+import com.example.test.presentation.screen.Sender
 
 @Composable
-fun MessageBubble(message: com.example.test.presentation.dummy.Message) {
+fun MessageBubble(message: com.example.test.presentation.screen.Message) {
     val isUser = message.sender == Sender.USER
     Row(
         modifier = Modifier.fillMaxWidth(),
