@@ -31,10 +31,9 @@ sealed class UiState {
     data class Error(val message: String) : UiState()
 }
 
-
 @HiltViewModel
 class CommunicationViewModel @Inject constructor(
-    private val getPastMemoryUseCase: GetPastMemoryUseCase
+    private val getPastMemoryUseCase: GetPastMemoryUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Ready)
