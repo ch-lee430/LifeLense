@@ -2,23 +2,28 @@ package com.example.test.data.repositoryImpl
 
 import com.example.test.data.dao.CalendarDao
 import com.example.test.data.dao.CallDao
+import com.example.test.data.dao.ImageDao
 import com.example.test.data.dao.MessageDao
 import com.example.test.domain.model.ProcessedCalendar
 import com.example.test.domain.model.ProcessedCall
+import com.example.test.domain.model.ProcessedImage
 import com.example.test.domain.model.ProcessedMessage
 import com.example.test.domain.repository.ProcessedDataRepository
 import com.example.test.util.toCalendarEntity
 import com.example.test.util.toCallEntity
+import com.example.test.util.toImageEntity
 import com.example.test.util.toMessageEntity
 import com.example.test.util.toProcessedCalendar
 import com.example.test.util.toProcessedCall
+import com.example.test.util.toProcessedImage
 import com.example.test.util.toProcessedMessage
 import javax.inject.Inject
 
 class ProcessedMemoryRepositoryImpl @Inject constructor(
     val calendarDao: CalendarDao,
     val callDao: CallDao,
-    val messageDao: MessageDao
+    val messageDao: MessageDao,
+    val imageDao: ImageDao
     ): ProcessedDataRepository {
     //Calendar
     override suspend fun getProcessedCalendar(): List<ProcessedCalendar> =
@@ -40,4 +45,13 @@ class ProcessedMemoryRepositoryImpl @Inject constructor(
     override suspend fun deleteAllProcessedMessage() = messageDao.deleteAllMessageTable()
     override suspend fun insertProcessedMessage(processedMessage: ProcessedMessage) =
         messageDao.insertMessageEntity(processedMessage.toMessageEntity())
+    override suspend fun getLatestMessageDate() : Long? = messageDao.getLatestMaxDate()
+
+    //Image
+    override suspend fun getProcessedImage(): List<ProcessedImage> =
+        imageDao.getAllImageEntity().map{it.toProcessedImage()}
+    override suspend fun deleteAllProcessedImage() = imageDao.deleteAllImageTable()
+    override suspend fun insertProcessedImage(processedImage: ProcessedImage) =
+        imageDao.insertImageEntity(processedImage.toImageEntity())
+    override suspend fun getLatestImageDate() : Long? = imageDao.getLatestMaxDate()
 }

@@ -16,4 +16,7 @@ interface MessageDao {
 
     @Query("DELETE FROM message_table")
     suspend fun deleteAllMessageTable()
+
+    @Query("SELECT MAX(date) FROM message_table")
+    suspend fun getLatestMaxDate(): Long?
 }

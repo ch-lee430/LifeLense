@@ -23,3 +23,10 @@ data class ProcessedMessage(
     val personName: String,
     val summary: String
 )
+
+data class ProcessedImage(
+    val uri: String,
+    val date: Long,
+    val mimeType: String, // 파일 유형은 내부 처리 및 구분을 위해 유지
+    val summary: String
+)

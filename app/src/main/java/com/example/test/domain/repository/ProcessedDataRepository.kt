@@ -2,6 +2,7 @@ package com.example.test.domain.repository
 
 import com.example.test.domain.model.ProcessedCalendar
 import com.example.test.domain.model.ProcessedCall
+import com.example.test.domain.model.ProcessedImage
 import com.example.test.domain.model.ProcessedMessage
 
 interface ProcessedDataRepository {
@@ -19,4 +20,11 @@ interface ProcessedDataRepository {
     suspend fun getProcessedMessage(): List<ProcessedMessage>
     suspend fun deleteAllProcessedMessage()
     suspend fun insertProcessedMessage(processedMessage: ProcessedMessage)
+    suspend fun getLatestMessageDate() : Long?
+
+    //Image
+    suspend fun getProcessedImage(): List<ProcessedImage>
+    suspend fun deleteAllProcessedImage()
+    suspend fun insertProcessedImage(processedImage: ProcessedImage)
+    suspend fun getLatestImageDate() : Long?
 }

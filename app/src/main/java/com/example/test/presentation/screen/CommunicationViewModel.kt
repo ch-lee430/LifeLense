@@ -1,11 +1,14 @@
 package com.example.test.presentation.screen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.test.domain.model.Memory
 import com.example.test.domain.model.CalendarEvent
+import com.example.test.domain.repository.ProcessedDataRepository
 import com.example.test.domain.usecase.GetPastMemoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,6 +37,7 @@ sealed class UiState {
 @HiltViewModel
 class CommunicationViewModel @Inject constructor(
     private val getPastMemoryUseCase: GetPastMemoryUseCase,
+    private val processedDataRepository: ProcessedDataRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Ready)

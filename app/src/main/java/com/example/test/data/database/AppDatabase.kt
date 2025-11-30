@@ -4,16 +4,19 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.test.data.dao.CalendarDao
 import com.example.test.data.dao.CallDao
+import com.example.test.data.dao.ImageDao
 import com.example.test.data.dao.MessageDao
 import com.example.test.data.entity.CalendarEntity
 import com.example.test.data.entity.CallEntity
+import com.example.test.data.entity.ImageEntity
 import com.example.test.data.entity.MessageEntity
 
 
 @Database(
     entities = [CalendarEntity::class,
                 CallEntity::class,
-                MessageEntity::class], // 여러 개 등록 가능
+                MessageEntity::class,
+                ImageEntity::class], // 여러 개 등록 가능
     version = 1,
     exportSchema = false
 )
@@ -22,4 +25,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun calendarDao(): CalendarDao
     abstract fun callDao(): CallDao
     abstract fun messageDao(): MessageDao
+    abstract fun imageDao(): ImageDao
+
+
+
 }

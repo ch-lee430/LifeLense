@@ -2,12 +2,15 @@ package com.example.test.util
 
 import com.example.test.data.entity.CalendarEntity
 import com.example.test.data.entity.CallEntity
+import com.example.test.data.entity.ImageEntity
 import com.example.test.data.entity.MessageEntity
 import com.example.test.domain.model.ProcessedCalendar
 import com.example.test.domain.model.ProcessedCall
+import com.example.test.domain.model.ProcessedImage
 import com.example.test.domain.model.ProcessedMessage
 import java.text.SimpleDateFormat
 import java.util.Locale
+import kotlin.Long
 
 
 fun CalendarEntity.toProcessedCalendar(): ProcessedCalendar =
@@ -30,6 +33,13 @@ fun MessageEntity.toProcessedMessage(): ProcessedMessage =
     summary = this.summary
     )
 
+fun ImageEntity.toProcessedImage(): ProcessedImage
+        = ProcessedImage(
+    uri= this.uri,
+    date= this.date,
+    mimeType = this.mimeType, // 파일 유형은 내부 처리 및 구분을 위해 유지
+    summary = this.summary
+)
 
 fun ProcessedCalendar.toCalendarEntity(): CalendarEntity
     = CalendarEntity(
@@ -51,7 +61,13 @@ fun ProcessedMessage.toMessageEntity(): MessageEntity
     summary = this.summary
     )
 
-
+fun ProcessedImage.toImageEntity(): ImageEntity
+    = ImageEntity(
+    uri= this.uri,
+    date= this.date,
+    mimeType = this.mimeType, // 파일 유형은 내부 처리 및 구분을 위해 유지
+    summary = this.summary
+    )
 
 fun String.toTimestamp(): Long {
     try {
