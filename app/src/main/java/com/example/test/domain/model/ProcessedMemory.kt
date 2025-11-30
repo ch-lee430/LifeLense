@@ -2,12 +2,12 @@ package com.example.test.domain.model
 
 data class ProcessedMemory(
     val title: String,
-    val date: Long,
     val content: String,
     val referenceData: List<ReferenceItem>
 )
 
 data class ProcessedCalendar(
+    val id: Long,
     val title: String,
     val date: Long
 )
@@ -19,6 +19,7 @@ data class ProcessedCall(
 )
 
 data class ProcessedMessage(
+    val id: Long,
     val date: Long,
     val personName: String,
     val summary: String

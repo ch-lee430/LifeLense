@@ -5,7 +5,10 @@ import android.util.Log
 import com.example.test.data.source.GeminiSource
 import com.example.test.domain.repository.GeminiRepository
 import com.example.test.domain.model.DateRangeAnalysis
+import com.example.test.domain.model.Memory
 import com.google.gson.Gson
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -22,6 +25,7 @@ class GeminiRepositoryImpl @Inject constructor(
     override suspend fun generateAnswer(question: String): String {
         return geminiSource.generateGeminiAnswer(question)
     }
+
 
     override suspend fun extractDateRange(question: String, currentTimestamp: Long): DateRangeAnalysis {
         val formattedTime = formatCurrentTime(currentTimestamp)
@@ -84,6 +88,81 @@ class GeminiRepositoryImpl @Inject constructor(
                 endTimestamp = currentTimestamp,
                 isSpecific = false
             )
+        }
+    }
+
+    override suspend fun generateMemoryResponse(
+        question: String,
+        contextString: String
+    ): Memory? {
+        return withContext(Dispatchers.IO) {
+            // 1. 프롬프트 작성
+            // AI에게 역할을 부여하고, 데이터를 주고, 반드시 JSON으로 뱉으라고 강제합니다.
+            val prompt = """
+                You are a smart personal assistant named 'LIFELENS'.
+                
+                [Task]
+                Based ONLY on the [User Data] provided below, answer the [User Question].
+                
+                [User Data]
+                $contextString
+                
+                [User Question]
+                $question
+                
+                [Requirements]
+                1. Language: Answer naturally in Korean.
+                2. Reference: Identify the specific items (SMS or Calendar events) used to answer the question.
+                3. Format: The output MUST be a valid JSON object. Do NOT use markdown code blocks (like ```json). Just return the raw JSON string.
+                4. Fields:
+                   - 'date': The timestamp (Long type, milliseconds) of the most relevant event.
+                   - 'referenceData': An array of items used as evidence.
+                   - 'type' in referenceData must be exactly one of: "SMS", "CALENDAR", "CALL", "PHOTO".
+                   - 'functionalValue': For SMS, use the Sender Name. For Calendar, use the Title.
+                
+                [Output JSON Structure Example]
+                {
+                  "title": "졸업자격 인정원 접수 안내",
+                  "date": 1731542400000,
+                  "content": "경북대학교에서 11월 14일에 졸업자격 인정원 접수 안내 문자가 왔습니다.",
+                  "referenceData": [
+                    {
+                      "type": "SMS",
+                      "displayValue": "경북대학교",
+                      "functionalValue": "경북대학교",
+                      "date": 1731542400000
+                    }
+                  ]
+                }
+            """.trimIndent()
+            try {
+                // 2. Gemini API 호출
+                val response = geminiSource.generateGeminiAnswer(prompt)
+                var responseText = response
+
+                // 3. 응답 전처리 (혹시 모를 마크다운 제거)
+                // AI가 가끔 ```json ... ``` 이렇게 줄 때가 있어서 벗겨내야 합니다.
+                if (responseText.startsWith("```json")) {
+                    responseText = responseText.removePrefix("```json").removeSuffix("```")
+                } else if (responseText.startsWith("```")) {
+                    responseText = responseText.removePrefix("```").removeSuffix("```")
+                }
+                responseText = responseText.trim()
+
+                Log.d("GeminiRepository", "Raw Response: $responseText")
+
+                // 4. JSON -> Memory 객체 변환 (Gson 사용)
+                // Enum 타입(SMS, CALENDAR 등)은 철자만 맞으면 알아서 매핑됩니다.
+                val memory = gson.fromJson(responseText, Memory::class.java)
+
+                memory
+
+            } catch (e: Exception) {
+                Log.e("GeminiRepository", "Error parsing response", e)
+                // 파싱 실패 시 null 반환 (또는 에러용 더미 객체 반환 가능)
+                null
+            }
+
         }
     }
 }

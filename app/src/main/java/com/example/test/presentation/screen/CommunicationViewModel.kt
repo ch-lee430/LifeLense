@@ -7,6 +7,7 @@ import com.example.test.domain.model.Memory
 import com.example.test.domain.model.CalendarEvent
 import com.example.test.domain.repository.ProcessedDataRepository
 import com.example.test.domain.usecase.GetPastMemoryUseCase
+import com.example.test.domain.usecase.GetProcessedMemoryUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +38,7 @@ sealed class UiState {
 @HiltViewModel
 class CommunicationViewModel @Inject constructor(
     private val getPastMemoryUseCase: GetPastMemoryUseCase,
-    private val processedDataRepository: ProcessedDataRepository
+    private val getProcessedMemoryUseCase: GetProcessedMemoryUseCase
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow<UiState>(UiState.Ready)
@@ -79,11 +80,11 @@ class CommunicationViewModel @Inject constructor(
         )
         _messages.value = _messages.value + loadingMessage
         _uiState.value = UiState.Analyzing
+        Log.d("question", userQuestion)
 
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             try {
-                val memory: Memory = getPastMemoryUseCase(userQuestion)
-
+                val memory: Memory = getProcessedMemoryUseCase(userQuestion)
                 removePlaceholderMessage()
 
                 val geminiReply = Message(sender = Sender.GEMINI, text = memory.content)

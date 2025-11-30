@@ -15,6 +15,7 @@ import kotlin.Long
 
 fun CalendarEntity.toProcessedCalendar(): ProcessedCalendar =
     ProcessedCalendar(
+        id = this.id,
         title = this.title,
         date  = this.date
     )
@@ -28,6 +29,7 @@ fun CallEntity.toProcessedCall(): ProcessedCall =
 
 fun MessageEntity.toProcessedMessage(): ProcessedMessage =
     ProcessedMessage(
+        id= this.id,
     date = this.date,
     personName = this.personName,
     summary = this.summary
@@ -43,6 +45,7 @@ fun ImageEntity.toProcessedImage(): ProcessedImage
 
 fun ProcessedCalendar.toCalendarEntity(): CalendarEntity
     = CalendarEntity(
+    id = this.id,
     title = this.title,
     date = this.date
     )
@@ -56,6 +59,7 @@ fun ProcessedCall.toCallEntity(): CallEntity
 
 fun ProcessedMessage.toMessageEntity(): MessageEntity
     = MessageEntity(
+    id = this.id,
     date = this.date,
     personName = this.personName,
     summary = this.summary
