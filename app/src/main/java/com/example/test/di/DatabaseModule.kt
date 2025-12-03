@@ -39,39 +39,29 @@ object DatabaseModule {
                 fun getDate(dateString: String): Long {
                     return sdf.parse(dateString)?.time ?: System.currentTimeMillis()
                 }
-
-                // ---------------------------------------------------------
-                // 1. MessageEntity (문자) 데이터 삽입
-                // ---------------------------------------------------------
-                // 2025.11.28 - 배재준 (프로젝트 ppt 개발)
-                // ※ MessageEntity에는 전화번호 필드가 없으므로 personName에 이름만 넣거나, 필요시 '배재준(010...)' 처럼 병기 가능합니다.
-                // 여기서는 이름만 넣겠습니다.
                 val date1 = getDate("2025.11.28")
                 db.execSQL("""
             INSERT INTO message_table (date, personName, summary) 
             VALUES ($date1, '배재준', '프로젝트 ppt 개발에 대한 내용')
         """.trimIndent())
-
-                // 2025.11.14 - 경북대학교 (졸업자격 인정원 접수안내)
                 val date2 = getDate("2025.11.14")
                 db.execSQL("""
             INSERT INTO message_table (date, personName, summary) 
             VALUES ($date2, '경북대학교', '졸업자격 인정원 접수안내 (문의: 053-950-6508)')
         """.trimIndent())
-
-
-                // ---------------------------------------------------------
-                // 2. CalendarEntity (일정) 데이터 삽입
-                // ---------------------------------------------------------
-                // 2025.11.29 - 미용실 가기
                 val date3 = getDate("2025.11.29")
                 db.execSQL("""
             INSERT INTO calendar_table (date, title) 
             VALUES ($date3, '미용실 가기')
         """.trimIndent())
+                val date4 = getDate("2025.11.14")
+                db.execSQL("""
+            INSERT INTO calendar_table (date, title) 
+            VALUES ($date4, '경북대학교 졸업자격 인정원 제출하기')
+        """.trimIndent())
             }
         })
-            .fallbackToDestructiveMigration()
+            //.fallbackToDestructiveMigration()
             .build()
 
 
